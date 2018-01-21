@@ -1,0 +1,82 @@
+# Definitions
+import urllib.request
+from html.parser import HTMLParser
+
+def GoToSite(website):
+	with urllib.request.urlopen(website) as html:
+		html = html.read() 
+		html = str(html)
+	#print(html)
+	#data = urllib.parse.urlencode(html)
+	#print(data)
+	if "id-gainers" in html:
+		data = html.split("alt=")
+
+		#print(data[2])
+		#print(data[2])
+		
+		#print(data[3])
+		name = data[3]
+		#print(name)
+		name = name.split("""<a href""")
+		# to remove spaces and extra char
+		junk = name[0]
+		junk = ''.join(junk.split())
+		junk = junk[:-3]
+		name[0] = junk
+		print("Coin Name: ",name[0])
+		
+		
+		
+		junk = name[1].split(("""text-left"""))
+		#print(junk[0])
+		junk2 = junk[1]
+		#print(junk2)
+		junk2 = junk2.split("""td""")
+		junk2[0] = junk2[0].replace(">","")
+		junk2[0] = junk2[0].replace("</","")
+		
+		name[1]= junk2[0].replace('"','')
+		# symbol
+
+		print("coin symbol: ", name[1])
+		# volume
+		junk3 = name[2].split("volume")
+		junk4 = junk3[1].split("</a")
+		print("volume per 24h: ",junk4[0])
+		# price 
+	
+		#print(name[3])
+		junk5 = name[3].split("price")
+		junk6 = junk5[1].split("%")
+		junk7 = junk6[0].split("</a")
+		print("price: ",junk7[0])
+
+		junk8 = junk7[1].split("text-right")
+		print("percent change: ", junk8[1])
+		print(len(data))
+		
+		#print(data[2451])
+		#print(data[2452])
+		''' 2250
+		<div class="global-stats mobile visible-xs" data-global-stats-container="">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Market Cap: <strong><a href="/charts/"><span data-global-stats-market-cap="" data-global-currency-market-cap="">$614,536,581,315</span></a></strong>
+                    <button class="pull-right dropdown-toggle" data-toggle="collapse" data-target="#global-stats-mobile" aria-expanded="false" aria-controls="global-stats-mobile"><span class="caret"></span></button>
+                </li>
+            </ul>
+            <div id="global-stats-mobile" class="collapse">
+                <ul class="list-group">
+                    <li class="list-group-item">24h Vol: <strong><a href="/charts/"><span data-global-stats-volume="" data-global-currency-volume="">$37,396,357,466</span></a></strong></li>
+                    <li class="list-group-item">BTC Dominance: <strong><a href="/charts/#dominance-percentage"><span data-global-stats-btc-dominance="">34.7</span>%</a></strong></li>
+                    <li class="list-group-item">Cryptocurrencies: <strong><a href="/all/views/all/"><span data-global-stats-cryptocurrencies="">1460</span></a></strong></li>
+                    <li class="list-group-item">Markets: <strong><a href="/currencies/volume/24-hour/"><span data-global-stats-markets="">7765</span></a></strong></li>
+                </ul>
+            </div>
+        </div>
+        '''
+	#for temp in data:
+		#print("hi")
+
+GoToSite("https://coinmarketcap.com/gainers-losers/")
